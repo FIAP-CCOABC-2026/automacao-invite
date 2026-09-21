@@ -1,5 +1,5 @@
 const ORGANIZATION = "FIAP-CCOABC-2026";
-const REQUEST_REPOSITORY = "ciencia-computacao-online";
+const REQUEST_REPOSITORY = "automacao-invite";
 
 const form = document.getElementById("invite-form");
 const usernameInput = document.getElementById("github-username");

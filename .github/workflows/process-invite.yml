@@ -1,0 +1,100 @@
+name: Process GitHub Invitation
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+
+  process-invite:
+
+    if: contains(github.event.issue.body, '<!-- invite-request -->')
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract GitHub username
+        id: username
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+
+          USERNAME=$(echo "$ISSUE_BODY" \
+            | grep -oP 'GitHub username: `\K[^`]+' \
+            | head -n 1)
+
+          if [ -z "$USERNAME" ]; then
+            echo "GitHub username não encontrado."
+
+            exit 1
+          fi
+
+          echo "username=$USERNAME" >> "$GITHUB_OUTPUT"
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          owner: ${{ secrets.GH_ORGANIZATION }}
+
+      - name: Send organization invitation
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          ORGANIZATION: ${{ secrets.GH_ORGANIZATION }}
+          USERNAME: ${{ steps.username.outputs.username }}
+          TEAM_ID: ${{ secrets.DEVELOPERS_TEAM_ID }}
+        run: |
+
+          echo "Enviando convite para: $USERNAME"
+
+          RESPONSE=$(curl \
+            --silent \
+            --show-error \
+            --fail-with-body \
+            --request PUT \
+            --url "https://api.github.com/orgs/${ORGANIZATION}/memberships/${USERNAME}" \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header "Accept: application/vnd.github+json" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            --data "{\"role\":\"member\"}")
+
+          echo "$RESPONSE"
+
+      - name: Add user to Developers team
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          ORGANIZATION: ${{ secrets.GH_ORGANIZATION }}
+          USERNAME: ${{ steps.username.outputs.username }}
+        run: |
+
+          curl \
+            --silent \
+            --show-error \
+            --fail-with-body \
+            --request PUT \
+            --url "https://api.github.com/teams/developers/memberships/${USERNAME}" \
+            --header "Authorization: Bearer ${GH_TOKEN}" \
+            --header "Accept: application/vnd.github+json" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            --data "{\"role\":\"member\"}"
+
+      - name: Close issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+
+          gh issue close "$ISSUE_NUMBER" \
+            --reason completed \
+            --comment "Convite processado para o usuário solicitado."

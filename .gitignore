@@ -1,0 +1,28 @@
+
+---
+
+# 9. `.gitignore`
+
+```gitignore
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

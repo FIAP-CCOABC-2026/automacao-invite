@@ -1,0 +1,215 @@
+:root {
+    --background: #f6f8fa;
+    --card: #ffffff;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --muted: #656d76;
+    --primary: #1f883d;
+    --primary-hover: #1a7f37;
+    --error: #cf222e;
+    --success-background: #dafbe1;
+    --error-background: #ffebe9;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background: var(--background);
+    color: var(--text);
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Helvetica,
+        Arial,
+        sans-serif;
+}
+
+.container {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+}
+
+.card {
+    width: 100%;
+    max-width: 440px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    padding: 36px;
+
+    box-shadow:
+        0 8px 24px rgba(140, 149, 159, 0.15);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.github-icon {
+    width: 48px;
+    height: 48px;
+
+    margin: 0 auto 20px;
+
+    color: var(--text);
+}
+
+.github-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+h1 {
+    margin: 0 0 8px;
+
+    font-size: 24px;
+    line-height: 1.25;
+}
+
+.header p {
+    margin: 0;
+
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+
+    height: 42px;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    background: white;
+}
+
+.input-wrapper span {
+    padding-left: 12px;
+
+    color: var(--muted);
+
+    font-size: 16px;
+}
+
+input {
+    flex: 1;
+
+    height: 100%;
+
+    border: none;
+    outline: none;
+
+    padding: 0 12px 0 4px;
+
+    font-size: 16px;
+}
+
+input:focus {
+    outline: none;
+}
+
+.input-wrapper:focus-within {
+    border-color: #0969da;
+
+    box-shadow:
+        0 0 0 3px rgba(9, 105, 218, 0.15);
+}
+
+.help {
+    margin: 8px 0 20px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+button {
+    width: 100%;
+    height: 42px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: var(--primary);
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        opacity 0.15s ease;
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.message {
+    margin-top: 20px;
+
+    padding: 12px 14px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.message.success {
+    background: var(--success-background);
+    color: #1a7f37;
+}
+
+.message.error {
+    background: var(--error-background);
+    color: var(--error);
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 480px) {
+
+    .card {
+        padding: 24px;
+    }
+
+}

@@ -71,24 +71,6 @@ jobs:
 
           echo "$RESPONSE"
 
-      - name: Add user to Developers team
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          ORGANIZATION: ${{ secrets.GH_ORGANIZATION }}
-          USERNAME: ${{ steps.username.outputs.username }}
-        run: |
-
-          curl \
-            --silent \
-            --show-error \
-            --fail-with-body \
-            --request PUT \
-            --url "https://api.github.com/teams/developers/memberships/${USERNAME}" \
-            --header "Authorization: Bearer ${GH_TOKEN}" \
-            --header "Accept: application/vnd.github+json" \
-            --header "X-GitHub-Api-Version: 2022-11-28" \
-            --data "{\"role\":\"member\"}"
-
       - name: Close issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

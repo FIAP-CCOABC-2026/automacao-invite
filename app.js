@@ -1,5 +1,5 @@
-const ORGANIZATION = "SUA-ORGANIZACAO";
-const REQUEST_REPOSITORY = "github-org-invite";
+const ORGANIZATION = "FIAP-CCOABC-2026";
+const REQUEST_REPOSITORY = "ciencia-computacao-online";
 
 const form = document.getElementById("invite-form");
 const usernameInput = document.getElementById("github-username");
